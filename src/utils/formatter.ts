@@ -1,4 +1,4 @@
-
+ 
 import type { WeatherData } from '../types/weather';
 
 export function formatTemperature(temp: number, units: string): string {
@@ -21,10 +21,12 @@ export function formatWeatherReport(data: WeatherData): string {
 
   return [
     `Weather for ${data.city}, ${data.country}`,
-    `Temperature: ${data.temperature}K (${data.feelsLike}K feels like)`,
+    `Temperature: ${data.temperature}°C (${data.feelsLike}°C feels like)`,
     `Humidity: ${data.humidity}%`,
+
     `Wind Speed: ${data.windSpeed} m/s`,
-    `Description: ${data.description} (icon: ${data.icon})`,
+    `Description: ${data.description}`,
+
     `UV Index: ${data.uvIndex}`,
     `Air Quality: ${airQuality}`
   ].join('\n');
