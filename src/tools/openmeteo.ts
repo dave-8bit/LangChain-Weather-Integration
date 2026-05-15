@@ -35,9 +35,11 @@ export async function getWeatherOpenMeteo(input: WeatherToolInput): Promise<Weat
         longitude,
         current_weather: true,
         hourly: ['relativehumidity_2m', 'uv_index'],
-        wind_speed_unit: 'ms'
+        wind_speed_unit: 'ms',
+        temperature_unit: 'celsius'
       }
     });
+
 
     const current = weatherResp.data?.current_weather;
     const hourly = weatherResp.data?.hourly;
@@ -61,8 +63,33 @@ export async function getWeatherOpenMeteo(input: WeatherToolInput): Promise<Weat
     const humidity = humidityValues[idx];
     const uvIndex = uvValues[idx];
 
-    const description = `Weather code ${weatherCode}`;
+    const weatherDescriptions: Record<number, string> = {
+      0: 'Clear sky',
+      1: 'Mainly clear',
+      2: 'Partly cloudy',
+      3: 'Overcast',
+      45: 'Foggy',
+      48: 'Icy fog',
+      51: 'Light drizzle',
+      53: 'Drizzle',
+      55: 'Heavy drizzle',
+      61: 'Slight rain',
+      63: 'Rain',
+      65: 'Heavy rain',
+      71: 'Slight snow',
+      73: 'Snow',
+      75: 'Heavy snow',
+      80: 'Rain showers',
+      95: 'Thunderstorm',
+      99: 'Thunderstorm with hail'
+    };
+
+    const description = weatherCode in weatherDescriptions
+      ? weatherDescriptions[weatherCode as number]
+      : 'Weather code ' + weatherCode;
+
     const icon = String(weatherCode ?? '');
+
 
     if (typeof temperature !== 'number') {
       throw new Error(`Weather data unavailable for '${city}'.`);

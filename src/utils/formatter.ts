@@ -1,3 +1,4 @@
+
 import type { WeatherData } from '../types/weather';
 
 export function formatTemperature(temp: number, units: string): string {
